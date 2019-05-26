@@ -4,7 +4,7 @@ import logging
 import datetime
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, RegexHandler,
                           ConversationHandler)
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, ReplyKeyboardMarkup
 
 
 # Enable logging
@@ -66,27 +66,48 @@ def four_menu(bot, update):
 
 def submenu_1_1(bot, update):
   query = update.callback_query
-  bot.send_photo(chat_id=query.message.chat_id, photo=open('graph1.png', 'rb'), caption='Grafica de temperatura en las ultimas 24 horas')
+  now = datetime.datetime.now()
+  bot.send_photo(chat_id=query.message.chat_id, photo=open('graph1.png', 'rb'), caption='Fecha: '+now.strftime("%Y-%m-%d")+' Hora: '+now.strftime("%H:%M:%S"  )+'\n')
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Grafica de temperatura en las ultimas 24 horas*',
+                        parse_mode=ParseMode.MARKDOWN)
+
+  bot.send_message(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*Presione para volver al menu principal*',
                         parse_mode=ParseMode.MARKDOWN,
                         reply_markup=back_to_main_keyboard())
   
 
 def submenu_1_2(bot, update):
   query = update.callback_query
+  now = datetime.datetime.now()
+  bot.send_photo(chat_id=query.message.chat_id, photo=open('graph1.png', 'rb'), caption='Fecha: '+now.strftime("%Y-%m-%d")+' Hora: '+now.strftime("%H:%M:%S"  )+'\n')
+
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
-                        text='*grafica de humedad en las ultimas 24 horas*',
+                        text='*Grafica de humedad en las ultimas 24 horas*',
+                        parse_mode=ParseMode.MARKDOWN)
+
+  bot.send_message(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*Presione para volver al menu principal*',
                         parse_mode=ParseMode.MARKDOWN,
                         reply_markup=back_to_main_keyboard())
 
 def submenu_1_3(bot, update):
   query = update.callback_query
+  now = datetime.datetime.now()
+  bot.send_photo(chat_id=query.message.chat_id, photo=open('graph1.png', 'rb'), caption='Fecha: '+now.strftime("%Y-%m-%d")+' Hora: '+now.strftime("%H:%M:%S"  )+'\n')
+
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
-                        text='*grafica de nivel de alimento en el ultimo mes*',
+                        text='*Grafica de nivel de alimento en el mes actual*',
+                        parse_mode=ParseMode.MARKDOWN)
+  bot.send_message(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*Presione para volver al menu principal*',
                         parse_mode=ParseMode.MARKDOWN,
                         reply_markup=back_to_main_keyboard())
 
