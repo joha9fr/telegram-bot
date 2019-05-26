@@ -1,9 +1,10 @@
 
 
 import logging
-
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+import datetime
+from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, RegexHandler,
+                          ConversationHandler)
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 
 
 # Enable logging
@@ -17,14 +18,18 @@ logger = logging.getLogger(__name__)
 # update. Error handlers also receive the raised TelegramError object in error.
 
 def start(bot, update):
-  update.message.reply_text(main_menu_message(),
+  now = datetime.datetime.now()
+  update.message.reply_text(text=main_menu_message(now),
+                            parse_mode=ParseMode.MARKDOWN,
                             reply_markup=main_menu_keyboard())
 
 def main_menu(bot, update):
+  now = datetime.datetime.now()
   query = update.callback_query
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
-                        text=main_menu_message(),
+                        text=main_menu_message(now),
+                        parse_mode=ParseMode.MARKDOWN,
                         reply_markup=main_menu_keyboard())
 
 def first_menu(bot, update):
@@ -32,6 +37,7 @@ def first_menu(bot, update):
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text=first_menu_message(),
+                        parse_mode=ParseMode.MARKDOWN,
                         reply_markup=first_menu_keyboard())
 
 def second_menu(bot, update):
@@ -39,6 +45,7 @@ def second_menu(bot, update):
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text=second_menu_message(),
+                        parse_mode=ParseMode.MARKDOWN,
                         reply_markup=second_menu_keyboard())
 
 def third_menu(bot, update):
@@ -46,6 +53,7 @@ def third_menu(bot, update):
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text=third_menu_message(),
+                        parse_mode=ParseMode.MARKDOWN,
                         reply_markup=third_menu_keyboard())
 
 def four_menu(bot, update):
@@ -53,67 +61,187 @@ def four_menu(bot, update):
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text=four_menu_message(),
+                        parse_mode=ParseMode.MARKDOWN,
                         reply_markup=four_menu_keyboard())
 
-# and so on for every callback_data option
-def first_submenu(bot, update):
-  pass
+def submenu_1_1(bot, update):
+  query = update.callback_query
+  bot.send_photo(chat_id=query.message.chat_id, photo=open('graph1.png', 'rb'), caption='Grafica de temperatura en las ultimas 24 horas')
+  bot.edit_message_text(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*Grafica de temperatura en las ultimas 24 horas*',
+                        parse_mode=ParseMode.MARKDOWN,
+                        reply_markup=back_to_main_keyboard())
+  
 
-def second_submenu(bot, update):
-  pass
+def submenu_1_2(bot, update):
+  query = update.callback_query
+  bot.edit_message_text(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*grafica de humedad en las ultimas 24 horas*',
+                        parse_mode=ParseMode.MARKDOWN,
+                        reply_markup=back_to_main_keyboard())
+
+def submenu_1_3(bot, update):
+  query = update.callback_query
+  bot.edit_message_text(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*grafica de nivel de alimento en el ultimo mes*',
+                        parse_mode=ParseMode.MARKDOWN,
+                        reply_markup=back_to_main_keyboard())
+
+def submenu_2_1(bot, update):
+  query = update.callback_query
+  bot.edit_message_text(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*Se han encedido las luces*',
+                        parse_mode=ParseMode.MARKDOWN,
+                        reply_markup=back_to_main_keyboard())
+
+def submenu_2_2(bot, update):
+  query = update.callback_query
+  bot.edit_message_text(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*Se han apagado las luces*',
+                        parse_mode=ParseMode.MARKDOWN,
+                        reply_markup=back_to_main_keyboard())
+
+def submenu_3_1(bot, update):
+  query = update.callback_query
+  bot.edit_message_text(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*Las cortinas ahora se encuentran 100% abiertas*',
+                        parse_mode=ParseMode.MARKDOWN,
+                        reply_markup=back_to_main_keyboard())
+
+def submenu_3_2(bot, update):
+  query = update.callback_query
+  bot.edit_message_text(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*Las cortinas ahora se encuentran 80% abiertas*',
+                        parse_mode=ParseMode.MARKDOWN,
+                        reply_markup=back_to_main_keyboard())
+
+def submenu_3_3(bot, update):
+  query = update.callback_query
+  bot.edit_message_text(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*Las cortinas ahora se encuentran 60% abiertas*',
+                        parse_mode=ParseMode.MARKDOWN,
+                        reply_markup=back_to_main_keyboard())
+
+def submenu_3_4(bot, update):
+  query = update.callback_query
+  bot.edit_message_text(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*Las cortinas ahora se encuentran 40% abiertas*',
+                        parse_mode=ParseMode.MARKDOWN,
+                        reply_markup=back_to_main_keyboard())
+
+def submenu_3_5(bot, update):
+  query = update.callback_query
+  bot.edit_message_text(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*Las cortinas ahora se encuentran 20% abiertas*',
+                        parse_mode=ParseMode.MARKDOWN,
+                        reply_markup=back_to_main_keyboard())
+
+def submenu_3_6(bot, update):
+  query = update.callback_query
+  bot.edit_message_text(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*Las cortinas ahora se encuentran cerradas*',
+                        parse_mode=ParseMode.MARKDOWN,
+                        reply_markup=back_to_main_keyboard())
+
+def submenu_4_1(bot, update):
+  query = update.callback_query
+  bot.edit_message_text(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*Se han encendido los ventiladores*',
+                        parse_mode=ParseMode.MARKDOWN,
+                        reply_markup=back_to_main_keyboard())
+
+def submenu_4_2(bot, update):
+  query = update.callback_query
+  bot.edit_message_text(chat_id=query.message.chat_id,
+                        message_id=query.message.message_id,
+                        text='*Se han apagado los ventiladores*',
+                        parse_mode=ParseMode.MARKDOWN,
+                        reply_markup=back_to_main_keyboard())
 
 ############################ Keyboards #########################################
 def main_menu_keyboard():
-  keyboard = [[InlineKeyboardButton('Consultar Sensores', callback_data='m1')],
+  keyboard = [[InlineKeyboardButton('Historico de Sensores', callback_data='m1')],
               [InlineKeyboardButton('Controlar Luces', callback_data='m2')],
               [InlineKeyboardButton('Controlar Cortinas', callback_data='m3')],
               [InlineKeyboardButton('Controlar Ventiladores', callback_data='m4')]]
   return InlineKeyboardMarkup(keyboard)
 
 def first_menu_keyboard():
-  keyboard = [[InlineKeyboardButton('Submenu 1-1', callback_data='m1_1')],
-              [InlineKeyboardButton('Submenu 1-2', callback_data='m1_2')],
-              [InlineKeyboardButton('Main menu', callback_data='main')]]
+  keyboard = [[InlineKeyboardButton('Temperatura', callback_data='a1')],
+              [InlineKeyboardButton('Humedad', callback_data='a2')],
+              [InlineKeyboardButton('Nivel de alimento', callback_data='a3')],
+              [InlineKeyboardButton('Menu principal', callback_data='main')]]
   return InlineKeyboardMarkup(keyboard)
 
 def second_menu_keyboard():
-  keyboard = [[InlineKeyboardButton('Submenu 2-1', callback_data='m2_1')],
-              [InlineKeyboardButton('Submenu 2-2', callback_data='m2_2')],
-              [InlineKeyboardButton('Main menu', callback_data='main')]]
+  keyboard = [[InlineKeyboardButton('Encender luces', callback_data='b1')],
+              [InlineKeyboardButton('Apagar luces', callback_data='b2')],
+              [InlineKeyboardButton('Menu principal', callback_data='main')]]
   return InlineKeyboardMarkup(keyboard)
 
 def third_menu_keyboard():
-  keyboard = [[InlineKeyboardButton('Submenu 3-1', callback_data='m3_1')],
-              [InlineKeyboardButton('Submenu 3-2', callback_data='m3_2')],
-              [InlineKeyboardButton('Main menu', callback_data='main')]]
+  keyboard = [[InlineKeyboardButton('Abrir 100%', callback_data='c1'),
+              InlineKeyboardButton('Abrir 80%', callback_data='c2')],
+              [InlineKeyboardButton('Abrir 60%', callback_data='c3'),
+              InlineKeyboardButton('Abrir 40%', callback_data='c4')],
+              [InlineKeyboardButton('Abrir 20%', callback_data='c5'),
+              InlineKeyboardButton('Cerrar', callback_data='c6')],
+              [InlineKeyboardButton('Menu principal', callback_data='main')]]
   return InlineKeyboardMarkup(keyboard)
 
 def four_menu_keyboard():
-  keyboard = [[InlineKeyboardButton('Submenu 4-1', callback_data='m4_1')],
-              [InlineKeyboardButton('Submenu 2-2', callback_data='m4_2')],
-              [InlineKeyboardButton('Main menu', callback_data='main')]]
+  keyboard = [[InlineKeyboardButton('Encender Ventiladores', callback_data='d1')],
+              [InlineKeyboardButton('Apagar Ventiladores', callback_data='d2')],
+              [InlineKeyboardButton('Menu principal', callback_data='main')]]
+  return InlineKeyboardMarkup(keyboard)
+
+def back_to_main_keyboard():
+  keyboard = [[InlineKeyboardButton('Menu principal', callback_data='main')]]
   return InlineKeyboardMarkup(keyboard)
 
 ############################# Messages #########################################
-def main_menu_message():
-  return 'Choose the option in main menu:'
+def main_menu_message(now):
+  return ('*Bienvenido al centro de control y monitoreo.*\n'
+          'A continuacion se presenta el estado actual:\n\n'
+          'Fecha: '+now.strftime("%Y-%m-%d")+' Hora: '+now.strftime("%H:%M:%S"  )+'\n'
+          'Temperatura actual:\n'
+          'Humedad actual:\n'
+          'Nivel de alimento:\n'
+          'Estado de las luces:\n'
+          'Estado de los ventiladores:\n'
+          'Estado de las cortinas:\n\n'
+          'Seleccione una opcion del menu principal:\n')
 
 def first_menu_message():
-  return 'Choose the submenu in first menu:'
+    return('*A continuacion puede obtener una grafica del cambio en el tiempo para cada sensor.*\n\n'
+           'Seleccione el sensor que desea consultar:\n')
 
 def second_menu_message():
-  return 'Choose the submenu in second menu:'
+  return ('*El estado actual de las luces es:*\n\n'
+          'Seleccione una opcion en el menu:')
 
 def third_menu_message():
-  return 'Choose the submenu in third menu:'
+  return ('*El nivel actual de las cortinas es:*\n\n'
+          'Seleccione una opcion en el menu:')
 
 def four_menu_message():
-  return 'Choose the submenu in four menu:'
+  return ('*El estado actual de los ventiladores es:*\n\n'
+          'Seleccione una opcion en el menu:')
 
-#def start(bot, update):
-#    """Send a message when the command /start is issued."""
-#    bot.send_message(chat_id=update.message.chat_id, text='Hi!')
-
+def x_message():
+  return ('*Volver al menu principal*\n\n')
 
 def help(bot, update):
     """Send a message when the command /help is issued."""
@@ -135,7 +263,7 @@ def main():
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
-    updater = Updater("818687469:AAGJvxRleb3T1cY1yIgT3AQFBAT15rQao9g")
+    updater = Updater()
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
@@ -147,8 +275,19 @@ def main():
     dp.add_handler(CallbackQueryHandler(second_menu, pattern='m2'))
     dp.add_handler(CallbackQueryHandler(third_menu, pattern='m3'))
     dp.add_handler(CallbackQueryHandler(four_menu, pattern='m4'))
-    dp.add_handler(CallbackQueryHandler(first_submenu, pattern='m1_1'))
-    dp.add_handler(CallbackQueryHandler(second_submenu, pattern='m2_1'))
+    dp.add_handler(CallbackQueryHandler(submenu_1_1, pattern='a1'))
+    dp.add_handler(CallbackQueryHandler(submenu_1_2, pattern='a2'))
+    dp.add_handler(CallbackQueryHandler(submenu_1_3, pattern='a3'))
+    dp.add_handler(CallbackQueryHandler(submenu_2_1, pattern='b1'))
+    dp.add_handler(CallbackQueryHandler(submenu_2_2, pattern='b2'))
+    dp.add_handler(CallbackQueryHandler(submenu_3_1, pattern='c1'))
+    dp.add_handler(CallbackQueryHandler(submenu_3_2, pattern='c2'))
+    dp.add_handler(CallbackQueryHandler(submenu_3_3, pattern='c3'))
+    dp.add_handler(CallbackQueryHandler(submenu_3_4, pattern='c4'))
+    dp.add_handler(CallbackQueryHandler(submenu_3_5, pattern='c5'))
+    dp.add_handler(CallbackQueryHandler(submenu_3_6, pattern='c6'))
+    dp.add_handler(CallbackQueryHandler(submenu_4_1, pattern='d1'))
+    dp.add_handler(CallbackQueryHandler(submenu_4_2, pattern='d2'))
 
     dp.add_handler(CommandHandler("help", help))
 
