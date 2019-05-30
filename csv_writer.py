@@ -2,6 +2,7 @@ import serial
 import csv
 
 arduino = serial.Serial('/dev/ttyACM0', 9600)
+#hola joha
 while 1:
 	if(arduino.in_waiting >0):
 		line = str(arduino.readline())[2:-5]
