@@ -4,6 +4,7 @@ import os, sys
 import serial
 import logging
 import datetime
+import arduinoCtrl
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, RegexHandler,
                           ConversationHandler)
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, ReplyKeyboardMarkup
@@ -15,18 +16,19 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-ser = serial.Serial('/dev/ttyACM0', 9600)
 # Define a few command handlers. These usually take the two arguments bot and
 # update. Error handlers also receive the raised TelegramError object in error.
 
 def start(bot, update):
   now = datetime.datetime.now()
+  arduinoCtrl.csv_write_data()
   update.message.reply_text(text=main_menu_message(now),
                             parse_mode=ParseMode.MARKDOWN,
                             reply_markup=main_menu_keyboard())
 
 def main_menu(bot, update):
   now = datetime.datetime.now()
+  arduinoCtrl.csv_write_data()
   query = update.callback_query
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
@@ -44,6 +46,7 @@ def first_menu(bot, update):
 
 def second_menu(bot, update):
   query = update.callback_query
+  arduinoCtrl.controlar_luces()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text=second_menu_message(),
@@ -52,6 +55,7 @@ def second_menu(bot, update):
 
 def third_menu(bot, update):
   query = update.callback_query
+  arduinoCtrl.controlar_cortinas()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text=third_menu_message(),
@@ -60,6 +64,7 @@ def third_menu(bot, update):
 
 def four_menu(bot, update):
   query = update.callback_query
+  arduinoCtrl.controlar_ventiladores()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text=four_menu_message(),
@@ -115,7 +120,7 @@ def submenu_1_3(bot, update):
 
 def submenu_2_1(bot, update):
   query = update.callback_query
-  ser.write(b'1')
+  arduinoCtrl.encender()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Se han encedido las luces*',
@@ -124,7 +129,7 @@ def submenu_2_1(bot, update):
 
 def submenu_2_2(bot, update):
   query = update.callback_query
-  ser.write(b'0')
+  arduinoCtrl.apagar()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Se han apagado las luces*',
@@ -133,6 +138,7 @@ def submenu_2_2(bot, update):
 
 def submenu_3_1(bot, update):
   query = update.callback_query
+  arduinoCtrl.cortinas_100()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Las cortinas ahora se encuentran 100% abiertas*',
@@ -141,6 +147,7 @@ def submenu_3_1(bot, update):
 
 def submenu_3_2(bot, update):
   query = update.callback_query
+  arduinoCtrl.cortinas_80()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Las cortinas ahora se encuentran 80% abiertas*',
@@ -149,6 +156,7 @@ def submenu_3_2(bot, update):
 
 def submenu_3_3(bot, update):
   query = update.callback_query
+  arduinoCtrl.cortinas_60()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Las cortinas ahora se encuentran 60% abiertas*',
@@ -157,6 +165,7 @@ def submenu_3_3(bot, update):
 
 def submenu_3_4(bot, update):
   query = update.callback_query
+  arduinoCtrl.cortinas_40()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Las cortinas ahora se encuentran 40% abiertas*',
@@ -165,6 +174,7 @@ def submenu_3_4(bot, update):
 
 def submenu_3_5(bot, update):
   query = update.callback_query
+  arduinoCtrl.cortinas_20()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Las cortinas ahora se encuentran 20% abiertas*',
@@ -173,6 +183,7 @@ def submenu_3_5(bot, update):
 
 def submenu_3_6(bot, update):
   query = update.callback_query
+  arduinoCtrl.cortinas_cerradas()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Las cortinas ahora se encuentran cerradas*',
@@ -181,6 +192,7 @@ def submenu_3_6(bot, update):
 
 def submenu_4_1(bot, update):
   query = update.callback_query
+  arduinoCtrl.encender()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Se han encendido los ventiladores*',
@@ -189,6 +201,7 @@ def submenu_4_1(bot, update):
 
 def submenu_4_2(bot, update):
   query = update.callback_query
+  arduinoCtrl.apagar()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Se han apagado los ventiladores*',
