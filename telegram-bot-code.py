@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# -*- coding: latin-1 -*-
+# -*- coding: UTF-8 -*-
 import os, sys
 import serial
 import logging
@@ -255,7 +255,7 @@ def main_menu_message(now):
   return ('*Bienvenido al centro de control y monitoreo.*\n'
           'A continuacion se presenta el estado actual:\n\n'
           'Fecha: '+now.strftime("%Y-%m-%d")+' Hora: '+now.strftime("%H:%M:%S"  )+'\n'
-          'Temperatura actual: *'+ temp+'°C*\n'
+          'Temperatura actual: *'+ temp+' °C*\n'
           'Humedad actual: *'+ hum+'%*\n'
           'Nivel de luz: *'+ luz+'%*\n'
           'Nivel de alimento: *'+ lvl_f+'%*\n'
