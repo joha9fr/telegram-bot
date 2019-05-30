@@ -120,7 +120,7 @@ def submenu_1_3(bot, update):
 
 def submenu_2_1(bot, update):
   query = update.callback_query
-  arduinoCtrl.encender()
+  arduinoCtrl.encender_luces()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Se han encedido las luces*',
@@ -129,7 +129,7 @@ def submenu_2_1(bot, update):
 
 def submenu_2_2(bot, update):
   query = update.callback_query
-  arduinoCtrl.apagar()
+  arduinoCtrl.apagar_luces()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Se han apagado las luces*',
@@ -192,7 +192,7 @@ def submenu_3_6(bot, update):
 
 def submenu_4_1(bot, update):
   query = update.callback_query
-  arduinoCtrl.encender()
+  arduinoCtrl.encender_ventiladores()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Se han encendido los ventiladores*',
@@ -201,7 +201,7 @@ def submenu_4_1(bot, update):
 
 def submenu_4_2(bot, update):
   query = update.callback_query
-  arduinoCtrl.apagar()
+  arduinoCtrl.apagar_ventiladores()
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Se han apagado los ventiladores*',
@@ -251,7 +251,7 @@ def back_to_main_keyboard():
 
 ############################# Messages #########################################
 def main_menu_message(now):
-  temp,lvl_f,hum,luz = arduinoCtrl.get_sensor_data()
+  temp,lvl_f,hum,luz,estadoL,estadoV,estadoC = arduinoCtrl.display_sensor_data()
   return ('*Bienvenido al centro de control y monitoreo.*\n'
           'A continuacion se presenta el estado actual:\n\n'
           'Fecha: '+now.strftime("%Y-%m-%d")+' Hora: '+now.strftime("%H:%M:%S"  )+'\n'
@@ -259,9 +259,9 @@ def main_menu_message(now):
           'Humedad actual: *'+ hum+'%*\n'
           'Nivel de luz: *'+ luz+'%*\n'
           'Nivel de alimento: *'+ lvl_f+'%*\n'
-          'Estado de las luces: *ON*\n'
-          'Estado de los ventiladores: *OFF*\n'
-          'Estado de las cortinas: *40% Abiertas*\n\n'
+          'Estado de las luces: *'+ estadoL+'*\n'
+          'Estado de los ventiladores: *'+ estadoV+'*\n'
+          'Estado de las cortinas: *'+ estadoC+'*\n\n'
           'Seleccione una opcion del menu principal:\n')
 
 def first_menu_message():

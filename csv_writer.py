@@ -14,5 +14,4 @@ while 1:
 				row=[]
 				writer = csv.writer(csvFile)
 				writer.writerow([temp,lvl_f,hum,luz])
-				#writer.writerows(row)
-		#			csvFile.close()
+
