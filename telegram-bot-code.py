@@ -1,5 +1,7 @@
-
-
+#!/usr/bin/python
+# -*- coding: latin-1 -*-
+import os, sys
+import serial
 import logging
 import datetime
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, RegexHandler,
@@ -13,7 +15,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-
+ser = serial.Serial('/dev/ttyACM0', 9600)
 # Define a few command handlers. These usually take the two arguments bot and
 # update. Error handlers also receive the raised TelegramError object in error.
 
@@ -67,7 +69,7 @@ def four_menu(bot, update):
 def submenu_1_1(bot, update):
   query = update.callback_query
   now = datetime.datetime.now()
-  bot.send_photo(chat_id=query.message.chat_id, photo=open('graph1.png', 'rb'), caption='Fecha: '+now.strftime("%Y-%m-%d")+' Hora: '+now.strftime("%H:%M:%S"  )+'\n')
+  bot.send_photo(chat_id=query.message.chat_id, photo=open('graphT.png', 'rb'), caption='Fecha: '+now.strftime("%Y-%m-%d")+' Hora: '+now.strftime("%H:%M:%S"  )+'\n')
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Grafica de temperatura en las ultimas 24 horas*',
@@ -83,7 +85,7 @@ def submenu_1_1(bot, update):
 def submenu_1_2(bot, update):
   query = update.callback_query
   now = datetime.datetime.now()
-  bot.send_photo(chat_id=query.message.chat_id, photo=open('graph1.png', 'rb'), caption='Fecha: '+now.strftime("%Y-%m-%d")+' Hora: '+now.strftime("%H:%M:%S"  )+'\n')
+  bot.send_photo(chat_id=query.message.chat_id, photo=open('graphH.png', 'rb'), caption='Fecha: '+now.strftime("%Y-%m-%d")+' Hora: '+now.strftime("%H:%M:%S"  )+'\n')
 
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
@@ -99,7 +101,7 @@ def submenu_1_2(bot, update):
 def submenu_1_3(bot, update):
   query = update.callback_query
   now = datetime.datetime.now()
-  bot.send_photo(chat_id=query.message.chat_id, photo=open('graph1.png', 'rb'), caption='Fecha: '+now.strftime("%Y-%m-%d")+' Hora: '+now.strftime("%H:%M:%S"  )+'\n')
+  bot.send_photo(chat_id=query.message.chat_id, photo=open('graphA.png', 'rb'), caption='Fecha: '+now.strftime("%Y-%m-%d")+' Hora: '+now.strftime("%H:%M:%S"  )+'\n')
 
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
@@ -113,6 +115,7 @@ def submenu_1_3(bot, update):
 
 def submenu_2_1(bot, update):
   query = update.callback_query
+  ser.write(b'1')
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Se han encedido las luces*',
@@ -121,6 +124,7 @@ def submenu_2_1(bot, update):
 
 def submenu_2_2(bot, update):
   query = update.callback_query
+  ser.write(b'0')
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
                         text='*Se han apagado las luces*',
@@ -237,12 +241,12 @@ def main_menu_message(now):
   return ('*Bienvenido al centro de control y monitoreo.*\n'
           'A continuacion se presenta el estado actual:\n\n'
           'Fecha: '+now.strftime("%Y-%m-%d")+' Hora: '+now.strftime("%H:%M:%S"  )+'\n'
-          'Temperatura actual:\n'
-          'Humedad actual:\n'
-          'Nivel de alimento:\n'
-          'Estado de las luces:\n'
-          'Estado de los ventiladores:\n'
-          'Estado de las cortinas:\n\n'
+          'Temperatura actual: *24 °C*\n'
+          'Humedad actual: *92%*\n'
+          'Nivel de alimento: *72%*\n'
+          'Estado de las luces: *ON*\n'
+          'Estado de los ventiladores: *OFF*\n'
+          'Estado de las cortinas: *40% Abiertas*\n\n'
           'Seleccione una opcion del menu principal:\n')
 
 def first_menu_message():
@@ -284,7 +288,7 @@ def main():
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
-    updater = Updater()
+    updater = Updater("818687469:AAGJvxRleb3T1cY1yIgT3AQFBAT15rQao9g")
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
