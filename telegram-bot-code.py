@@ -21,14 +21,14 @@ logger = logging.getLogger(__name__)
 
 def start(bot, update):
   now = datetime.datetime.now()
-  arduinoCtrl.csv_write_data()
+  arduinoCtrl.lectura_sensores()
   update.message.reply_text(text=main_menu_message(now),
                             parse_mode=ParseMode.MARKDOWN,
                             reply_markup=main_menu_keyboard())
 
 def main_menu(bot, update):
   now = datetime.datetime.now()
-  arduinoCtrl.csv_write_data()
+  arduinoCtrl.lectura_sensores()
   query = update.callback_query
   bot.edit_message_text(chat_id=query.message.chat_id,
                         message_id=query.message.message_id,
@@ -251,12 +251,14 @@ def back_to_main_keyboard():
 
 ############################# Messages #########################################
 def main_menu_message(now):
+  temp,lvl_f,hum,luz = arduinoCtrl.get_sensor_data()
   return ('*Bienvenido al centro de control y monitoreo.*\n'
           'A continuacion se presenta el estado actual:\n\n'
           'Fecha: '+now.strftime("%Y-%m-%d")+' Hora: '+now.strftime("%H:%M:%S"  )+'\n'
-          'Temperatura actual: *24 °C*\n'
-          'Humedad actual: *92%*\n'
-          'Nivel de alimento: *72%*\n'
+          'Temperatura actual: *'+ temp+'°C*\n'
+          'Humedad actual: *'+ hum+'%*\n'
+          'Nivel de luz: *'+ luz+'%*\n'
+          'Nivel de alimento: *'+ lvl_f+'%*\n'
           'Estado de las luces: *ON*\n'
           'Estado de los ventiladores: *OFF*\n'
           'Estado de las cortinas: *40% Abiertas*\n\n'
